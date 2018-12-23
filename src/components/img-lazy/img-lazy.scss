@@ -1,1 +1,36 @@
+:host {
+    position: relative;
+    display: block;
+}
+img {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    transition-property: opacity;
+    transition-duration: var(--animationDuration);
+}
+
+.smallImg {
+    transition-delay: var(--animationDurationDelay);
+}
+
+.isLoading {
+    filter: blur(var(--blurrIntensity));
+}
+
+.img.isLoading {
+    opacity: 0;
+}
+
+.img:not(.isLoading) {
+    opacity: 1;
+}
+
+.smallImg.loaded {
+    opacity: 0;
+}
+
+.smallImg:not(.loaded) {
+    opacity: 1;
+}
 

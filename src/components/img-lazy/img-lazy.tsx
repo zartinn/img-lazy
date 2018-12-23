@@ -1,5 +1,4 @@
-import { Component, Prop } from '@stencil/core';
-import { format } from '../../utils/utils';
+import { Component, Prop, Element, State } from '@stencil/core';
 
 @Component({
   tag: 'img-lazy',
@@ -8,25 +7,67 @@ import { format } from '../../utils/utils';
 })
 export class ImgLazy {
   /**
-   * The first name
+   * the main src for the image which will be loaded after the preview.
    */
-  @Prop() first: string;
+  @Prop() src: string;
 
   /**
-   * The middle name
+   * A small src that will be loaded and shown first. This src should be around 1-3kB and about 20-50px wide.
+   * The small src will be scaled up and blurred.
    */
-  @Prop() middle: string;
+  @Prop() smallsrc: string;
 
   /**
-   * The last name
+   * alt property for image
    */
-  @Prop() last: string;
+  @Prop() alt: string;
 
-  private getText(): string {
-    return format(this.first, this.middle, this.last);
+  /**
+   * Animation duration for opacity to have a smooth transition between small blurred img and real img
+   */
+  @Prop() animationDuration: number = 500;
+
+  /**
+   * Reference to ImgLazy element
+   */
+  @Element() private el: HTMLElement;
+
+  /**
+   * Blurr intensity in pixels.
+   */
+  @Prop() blurrIntensity: number = 50;
+
+  @State() private isPreviewLoaded = false;
+  @State() private isImageLoaded = false;
+
+  componentWillLoad() {
+    this.el.style.setProperty('--animationDuration', `${this.animationDuration}ms`);
+    this.el.style.setProperty('--animationDurationDelay', `${this.animationDuration / 4}ms`);
+    this.el.style.setProperty('--blurrIntensity', `${this.blurrIntensity}px`);
+  }
+
+  private onPreviewLoaded() {
+    this.isPreviewLoaded = true;
+  }
+
+  private onImageLoaded() {
+    this.el.shadowRoot.querySelector('.img').classList.remove('isLoading');
+    this.el.shadowRoot.querySelector('.smallImg').classList.add('loaded');
+    setTimeout(() => {
+      this.isImageLoaded = true;
+    }, this.animationDuration);
   }
 
   render() {
-    return <div>Hello, World! I'm {this.getText()}</div>;
+    return (
+      <div>
+        {!this.isImageLoaded && 
+          <img class="smallImg isLoading" src={this.smallsrc} onLoad={this.onPreviewLoaded.bind(this)}></img>
+        }
+        {this.isPreviewLoaded &&
+          <img class="img isLoading" src={this.src} alt={this.alt} onLoad={this.onImageLoaded.bind(this)}></img>
+        }
+      </div>
+    );
   }
 }

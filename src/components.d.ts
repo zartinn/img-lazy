@@ -14,31 +14,47 @@ export namespace Components {
 
   interface ImgLazy {
     /**
-    * The first name
+    * alt property for image
     */
-    'first': string;
+    'alt': string;
     /**
-    * The last name
+    * Animation duration for opacity to have a smooth transition between small blurred img and real img
     */
-    'last': string;
+    'animationDuration': number;
     /**
-    * The middle name
+    * Blurr intensity in pixels.
     */
-    'middle': string;
+    'blurrIntensity': number;
+    /**
+    * A small src that will be loaded and shown first. This src should be around 1-3kB and about 20-50px wide. The small src will be scaled up and blurred.
+    */
+    'smallsrc': string;
+    /**
+    * the main src for the image which will be loaded after the preview.
+    */
+    'src': string;
   }
   interface ImgLazyAttributes extends StencilHTMLAttributes {
     /**
-    * The first name
+    * alt property for image
     */
-    'first'?: string;
+    'alt'?: string;
     /**
-    * The last name
+    * Animation duration for opacity to have a smooth transition between small blurred img and real img
     */
-    'last'?: string;
+    'animationDuration'?: number;
     /**
-    * The middle name
+    * Blurr intensity in pixels.
     */
-    'middle'?: string;
+    'blurrIntensity'?: number;
+    /**
+    * A small src that will be loaded and shown first. This src should be around 1-3kB and about 20-50px wide. The small src will be scaled up and blurred.
+    */
+    'smallsrc'?: string;
+    /**
+    * the main src for the image which will be loaded after the preview.
+    */
+    'src'?: string;
   }
 }
 
