@@ -18,13 +18,13 @@ export namespace Components {
     */
     'alt': string;
     /**
-    * Animation duration for opacity to have a smooth transition between small blurred img and real img
+    * Animation duration for opacity to have a smooth transition between small blurred img and real img. Default is 1000ms;
     */
-    'animationDuration': number;
+    'animationduration': number;
     /**
-    * Blurr intensity in pixels.
+    * Blurr intensity in pixels. Default is 50.
     */
-    'blurrIntensity': number;
+    'blurrintensity': number;
     /**
     * A small src that will be loaded and shown first. This src should be around 1-3kB and about 20-50px wide. The small src will be scaled up and blurred.
     */
@@ -40,13 +40,15 @@ export namespace Components {
     */
     'alt'?: string;
     /**
-    * Animation duration for opacity to have a smooth transition between small blurred img and real img
+    * Animation duration for opacity to have a smooth transition between small blurred img and real img. Default is 1000ms;
     */
-    'animationDuration'?: number;
+    'animationduration'?: number;
     /**
-    * Blurr intensity in pixels.
+    * Blurr intensity in pixels. Default is 50.
     */
-    'blurrIntensity'?: number;
+    'blurrintensity'?: number;
+    'onImageLoaded'?: (event: CustomEvent) => void;
+    'onPreviewLoaded'?: (event: CustomEvent) => void;
     /**
     * A small src that will be loaded and shown first. This src should be around 1-3kB and about 20-50px wide. The small src will be scaled up and blurred.
     */

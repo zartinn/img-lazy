@@ -1,4 +1,4 @@
-import { Component, Prop, Element, State } from '@stencil/core';
+import { Component, Prop, Element, State, Event, EventEmitter } from '@stencil/core';
 
 @Component({
   tag: 'img-lazy',
@@ -23,39 +23,49 @@ export class ImgLazy {
   @Prop() alt: string;
 
   /**
-   * Animation duration for opacity to have a smooth transition between small blurred img and real img
+   * Animation duration for opacity to have a smooth transition between small blurred img and real img.
+   * Default is 1000ms;
    */
-  @Prop() animationDuration: number = 500;
+  @Prop() animationduration: number;
+  private _animationDuration: number = 1000;
+
+  /**
+   * Blurr intensity in pixels. Default is 50.
+   */
+  @Prop() blurrintensity: number;
+  private _blurrIntensity: number = 50;
 
   /**
    * Reference to ImgLazy element
    */
   @Element() private el: HTMLElement;
 
-  /**
-   * Blurr intensity in pixels.
-   */
-  @Prop() blurrIntensity: number = 50;
-
+  @Event() previewLoaded: EventEmitter;
   @State() private isPreviewLoaded = false;
+
+  @Event() imageLoaded: EventEmitter;
   @State() private isImageLoaded = false;
 
+
   componentWillLoad() {
-    this.el.style.setProperty('--animationDuration', `${this.animationDuration}ms`);
-    this.el.style.setProperty('--animationDurationDelay', `${this.animationDuration / 4}ms`);
-    this.el.style.setProperty('--blurrIntensity', `${this.blurrIntensity}px`);
+    this._blurrIntensity = this.blurrintensity ? this.blurrintensity : this._blurrIntensity;
+    this._animationDuration = this.animationduration ? this.animationduration : this._animationDuration;
+    this.el.style.setProperty('--animationDuration', `${this._animationDuration}ms`);
+    this.el.style.setProperty('--blurrIntensity', `${this._blurrIntensity}px`);
   }
 
   private onPreviewLoaded() {
     this.isPreviewLoaded = true;
+    this.previewLoaded.emit();
   }
 
   private onImageLoaded() {
     this.el.shadowRoot.querySelector('.img').classList.remove('isLoading');
     this.el.shadowRoot.querySelector('.smallImg').classList.add('loaded');
+    this.imageLoaded.emit;
     setTimeout(() => {
       this.isImageLoaded = true;
-    }, this.animationDuration);
+    }, this._animationDuration);
   }
 
   render() {

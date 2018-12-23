@@ -11,7 +11,11 @@ img {
 }
 
 .smallImg {
-    transition-delay: var(--animationDurationDelay);
+    transition-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);;
+}
+
+.img {
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .isLoading {
